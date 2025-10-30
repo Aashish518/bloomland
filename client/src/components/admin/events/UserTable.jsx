@@ -142,7 +142,7 @@ const UserDataTable = ({
     // console.log(result);
     setFilteredReq(reqs);
     setFilteredUsers(result);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   };
 
   // Handle checkbox selection

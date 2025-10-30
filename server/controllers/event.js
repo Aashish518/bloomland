@@ -24,7 +24,8 @@ exports.addEvent = async (req, res) => {
 			itinerary,
 			sponsors,
 			commission,
-			eventTicket, // This is expected to be a JSON string array from the frontend
+			eventTicket,
+      specialFunctionalities, // This is expected to be a JSON string array from the frontend
 		} = req.body;
 
 	
@@ -36,6 +37,14 @@ exports.addEvent = async (req, res) => {
 		// });
 
 		// Ensure images is an array (some file upload libs may send single file as an object)
+    let parsedFunctionalities = [];
+    if (specialFunctionalities) {
+      try {
+        parsedFunctionalities = JSON.parse(specialFunctionalities);
+      } catch (e) {
+        console.warn("Invalid JSON for specialFunctionalities:", e.message);
+      }
+    }
 		let images = [];
 		if (req.files && req.files.images) {
 			images = Array.isArray(req.files.images)
@@ -176,6 +185,7 @@ exports.addEvent = async (req, res) => {
 			gstAmount: gstAmount,
 			totalAmount: totalAmount,
 			images: imageDocs,
+      specialFunctionalities: parsedFunctionalities,
 			// tickets : eventTicket ? JSON.parse(eventTicket) : null
 
 			// Do not set eventTickets yet

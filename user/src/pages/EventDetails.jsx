@@ -347,11 +347,29 @@ export default function EventDetails() {
 
 		if (!isOpen) return null;
 
-		// Get tickets data from eventTickets array (structure: [{ eventId, eventType, tickets: [...] }])
-		const allTickets =
-			Array.isArray(event?.eventTickets) && event.eventTickets.length > 0
-				? event.eventTickets.flatMap((et) => et.tickets || [])
-				: [];
+		console.log("aashish", event);
+
+let allTickets = [];
+
+if (Array.isArray(event?.eventTickets)) {
+	console.log("eventTickets found:", event.eventTickets);
+
+	allTickets = event.eventTickets.flatMap((et, index) => {
+		console.log(`Checking eventTicket[${index}]:`, et);
+		if (Array.isArray(et.tickets) && et.tickets.length > 0) {
+			console.log(`Found ${et.tickets.length} tickets in eventTicket[${index}]`);
+			return et.tickets;
+		} else {
+			console.warn(`No tickets found in eventTicket[${index}]`);
+			return [];
+		}
+	});
+} else {
+	console.warn("event.eventTickets is missing or not an array");
+}
+
+console.log("allTickets result:", allTickets);
+
 
 		// console.log("All tickets data from event:", allTickets);
 

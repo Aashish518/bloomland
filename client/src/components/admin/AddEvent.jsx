@@ -211,7 +211,46 @@ export default function AddEventModal() {
 		gstAmount: 0,
 		totalAmount: 0,
 		eventTicket: [],
+		specialFunctionalities: [
+		{
+			id: 1,
+			name: "",
+			price: "",
+		},
+	],
 	});
+
+	// Add new functionality
+const addSpecialFunctionality = () => {
+	setFormData((prev) => ({
+		...prev,
+		specialFunctionalities: [
+			...prev.specialFunctionalities,
+			{ id: Date.now(), name: "", price: "" },
+		],
+	}));
+};
+
+// Remove a functionality
+const removeSpecialFunctionality = (id) => {
+	setFormData((prev) => ({
+		...prev,
+		specialFunctionalities: prev.specialFunctionalities.filter(
+			(func) => func.id !== id
+		),
+	}));
+};
+
+// Update name or price
+const updateSpecialFunctionality = (id, field, value) => {
+	setFormData((prev) => ({
+		...prev,
+		specialFunctionalities: prev.specialFunctionalities.map((func) =>
+			func.id === id ? { ...func, [field]: value } : func
+		),
+	}));
+};
+
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -487,6 +526,15 @@ export default function AddEventModal() {
 		if (duration) {
 			data.append("duration", duration);
 		}
+		if (
+		formData.specialFunctionalities &&
+		formData.specialFunctionalities.length > 0
+	) {
+		data.append(
+			"specialFunctionalities",
+			JSON.stringify(formData.specialFunctionalities)
+		);
+	}
 
 		if (itinerary) {
 			// formData.inclusions.forEach((it) => {
@@ -1418,6 +1466,72 @@ export default function AddEventModal() {
 										</div>
 									</div>
 								</div>
+
+								{formData.specialFunctionalities.map((func, index) => (
+	<div key={func.id} className="border border-gray-200 rounded-lg p-6 bg-white shadow-sm">
+		<div className="flex items-center justify-between mb-4">
+			<h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+				<Package className="w-5 h-5 text-green-600" />
+				Special Functionality {index + 1}
+			</h3>
+			{formData.specialFunctionalities.length > 1 && (
+				<button
+					type="button"
+					onClick={() => removeSpecialFunctionality(func.id)}
+					className="text-red-500 hover:text-red-700 p-1 transition-colors"
+					title="Remove Functionality">
+					<Trash2 className="w-4 h-4" />
+				</button>
+			)}
+		</div>
+
+		<div className="space-y-4">
+			{/* Name Field */}
+			<div>
+				<label className="block text-sm font-medium text-gray-700 mb-2">
+					Functionality Name
+				</label>
+				<input
+					type="text"
+					value={func.name}
+					onChange={(e) =>
+						updateSpecialFunctionality(func.id, "name", e.target.value)
+					}
+					placeholder="e.g., Live Chat Support, AI Recommendation Engine"
+					className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+				/>
+			</div>
+
+			{/* Price Field */}
+			<div>
+				<label className="block text-sm font-medium text-gray-700 mb-2">
+					Price
+				</label>
+				<input
+					type="number"
+					value={func.price}
+					onChange={(e) =>
+						updateSpecialFunctionality(func.id, "price", e.target.value)
+					}
+					placeholder="e.g., 4999"
+					className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+				/>
+			</div>
+		</div>
+	</div>
+))}
+
+<div className="flex gap-4">
+	<button
+		type="button"
+		onClick={addSpecialFunctionality}
+		className="flex items-center gap-2 px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-medium">
+		<Plus className="w-4 h-4" />
+		Add Functionality
+	</button>
+</div>
+
+
 
 								<div className="grid grid-cols-1 gap-8">
 									{/* Form Section */}

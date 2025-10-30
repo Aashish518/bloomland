@@ -40,6 +40,13 @@ const eventSchema = new mongoose.Schema({
       value: { type: String },
     },
   ],
+  specialFunctionalities: [
+  {
+    id: { type: Number, required: false },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+  },
+],
   itinerary: [
     {
       id: { type: Number },
