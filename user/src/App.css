@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888;
+}
